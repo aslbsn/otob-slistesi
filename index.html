@@ -12,17 +12,39 @@
 
 <body>
     <div class="menu">
-        <ul>
-            <li><a href="bus1.html"><button type="button" class="btn btn-outline-secondary">Otobüs1</button></a></li>
-            <li><a href="bus2.html"><button type="button" class="btn btn-outline-secondary">Otobüs2</button></a></li>
-            <li><a href="bus3.html"><button type="button" class="btn btn-outline-secondary">Otobüs3</button></a></li>
-            <!-- Daha fazla otobüs eklenebilir -->
+        <ul id="busList">
+            <!-- Otobüs düğmelerini burada oluşturuyorum -->
         </ul>
     </div>
     <div class="anasayfa">
         <h2>Otobüs Takip Sistemi</h2>
     </div>
 
+    <script>
+        var otobusler = [
+            { ad: "Otobüs 1", link: "bus1.html" },
+            { ad: "Otobüs 2", link: "bus2.html" },
+            { ad: "Otobüs 3", link: "bus3.html" }
+            // Buarada daha fazla otobüs ekleyebiliriz
+        ];
+
+        var busList = document.getElementById("busList");
+
+        otobusler.forEach(function (otobus) {
+            var li = document.createElement("li");
+            var a = document.createElement("a");
+            var button = document.createElement("button");
+
+            a.href = otobus.link;
+            button.type = "button";
+            button.className = "btn btn-outline-secondary";
+            button.textContent = otobus.ad;
+
+            a.appendChild(button);
+            li.appendChild(a);
+            busList.appendChild(li);
+        });
+    </script>
 </body>
 
 </html>

@@ -5,14 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Öğrenci Otobüsü</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
-    <style>
-        .tik {
-            display: none;
-        }
-    </style>
 </head>
 
 <body>
@@ -21,30 +14,36 @@
         <div id="div1">
             <h2>Otobüs 1 Öğrencileri:</h2>
             <ul id="ogrenciListesi">
-                <!-- Burada öğrenci isimlerini listeledim-->
-                <li>Öğrenci 1 <span class="tik">✓</span><button style="margin-left: 15px;"
-                        onclick="secilenOgrenci(this)">Seç</button></li>
-                <li>Öğrenci 2 <span class="tik">✓</span><button style="margin-left: 15px;"
-                        onclick="secilenOgrenci(this)">Seç</button></li>
-                <li>Öğrenci 3 <span class="tik">✓</span><button style="margin-left: 15px;"
-                        onclick="secilenOgrenci(this)">Seç</button></li>
-                <li>Öğrenci 4 <span class="tik">✓</span><button style="margin-left: 15px;"
-                        onclick="secilenOgrenci(this)">Seç</button></li>
-                <li>Öğrenci 5 <span class="tik">✓</span><button style="margin-left: 15px;"
-                        onclick="secilenOgrenci(this)">Seç</button></li>
+                <!-- Öğrenci bilgilerini dinamik olarak oluşuyor -->
             </ul>
         </div>
         <div id="div2">
-
             <h2>Seçilen Öğrenciler:</h2>
             <ul id="secilenOgrenciler"></ul>
-
             <button type="submit" class="submitbtn" onclick="submitSecilenOgrenciler()">Gönder</button>
         </div>
     </div>
 
     <script>
+        var ogrenciler = [
+            "Öğrenci 1",
+            "Öğrenci 2",
+            "Öğrenci 3",
+            "Öğrenci 4",
+            "Öğrenci 5"
+        ];
+
         var secilenOgrenciler = [];
+
+        // Dinamik öğrenci listesi
+        var ogrenciListesi = document.getElementById("ogrenciListesi");
+        for (var i = 0; i < ogrenciler.length; i++) {
+            var ogrenciAdi = ogrenciler[i];
+            var li = document.createElement("li");
+            li.innerHTML = ogrenciAdi + '<span class="tik">✓</span><button style="margin-left: 15px;" onclick="secilenOgrenci(this)">Seç</button>';
+
+            ogrenciListesi.appendChild(li);
+        }
 
         function secilenOgrenci(button) {
             var ogrenciAdi = button.parentNode.textContent.trim().slice(0, 9);
@@ -53,35 +52,46 @@
 
             secilenOgrenciler.push({ ogrenci: ogrenciAdi, tarihSaat: tarihSaatMetni });
 
-            // Burada seçilen öğrenciyi listeye ekliyorum:
             var secilenOgrencilerListesi = document.getElementById("secilenOgrenciler");
             var yeniOgrenci = document.createElement("li");
             yeniOgrenci.textContent = ogrenciAdi + " Öğrencinin Alındığı Tarih ve Saat " + tarihSaatMetni;
             secilenOgrencilerListesi.appendChild(yeniOgrenci);
 
-            // Seçilen öğrenciyi işaretlemek için:
             var tikIşareti = button.previousElementSibling;
             tikIşareti.style.display = "inline";
             button.disabled = true;
 
-            // Buradaki geri ekle düğmesi:
             var geriEkleDugmesi = document.createElement("button");
             geriEkleDugmesi.textContent = "Geri Ekle";
             geriEkleDugmesi.onclick = function () {
-                secilenOgrenciler.splice(secilenOgrenciler.indexOf(ogrenciAdi), 1);
+                secilenOgrenciler.splice(secilenOgrenciler.findIndex(function (el) {
+                    return el.ogrenci === ogrenciAdi;
+                }), 1);
                 secilenOgrencilerListesi.removeChild(yeniOgrenci);
                 tikIşareti.style.display = "none";
                 button.disabled = false;
-                // Geri Ekle düğmesinin görselini kaldırmak için
                 button.parentNode.removeChild(geriEkleDugmesi);
             };
             button.parentNode.appendChild(geriEkleDugmesi);
         }
 
         function submitSecilenOgrenciler() {
-            // Seçilen öğrencileri burada sunucuya gönderiyorum 
-            console.log(secilenOgrenciler);
+
+
+            if (secilenOgrenciler.length > 0) {
+                // Seçilen öğrencileri burada sunucuya gönderiyorum
+                console.log(secilenOgrenciler);
+
+                alert("Öğrenciler listesi başarıyla gönderildi!");
+            } else {
+
+                alert("Lütfen en az bir öğrenci seçin.");
+            }
         }
+
+
+
+
     </script>
 </body>
 
